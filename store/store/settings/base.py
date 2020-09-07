@@ -38,6 +38,9 @@ DJANGO_APPS = (
 
 LOCAL_APPS = (
     'applications.home',
+    'applications.api_basic',
+    'applications.anime',
+    'applications.pokedex'
 )
 
 THIRD_PARTY_APPS = (
