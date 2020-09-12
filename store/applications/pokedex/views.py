@@ -4,8 +4,13 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import HttpResponse
-from .serializers import PokemonSerializer, StatisticsSerializer, AbilitiesSerializer, CategorySerializer, TypeSerializer
-from .auxiliary import errorMessage, sendMessage
+from .serializers import PokemonSerializer, StatisticsSerializer, AbilitiesSerializer, CategorySerializer, \
+    TypeSerializer, ImagePokemonSerializer
+from .auxiliary import errorMessage, sendMessage, sendImage
+import cloudinary.uploader
+import json
+
+
 # Create your views here.
 
 # Pokemon views
@@ -26,6 +31,43 @@ def createPokemon(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     else:
         return HttpResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def uploadImagePokemon(request):
+    file = request.data.get('file')
+    try:
+        responseCloudinary = cloudinary.uploader.upload(file)
+    except:
+        return HttpResponse(errorMessage('Internal server error'), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    data = {
+        'pokemon': request.data['pokemon'],
+        'urlImage': responseCloudinary['secure_url'],
+        'keyImage': responseCloudinary['public_id']
+    }
+    serializer = ImagePokemonSerializer(data=data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    else:
+        return HttpResponse(errorMessage('Error in upload file'), status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def getImagePokemon(request, pk):
+    try:
+        pokemon = Pokemon.objects.get(pk=pk)
+        imagePokemon = ImagePokemonSerializer.objects.get(pk=pokemon['id'])
+    except Pokemon.DoesNotExist:
+        return HttpResponse(
+            errorMessage('The pokemon with id ' + pk + ' no exist'),
+            status=status.HTTP_404_NOT_FOUND
+        )
+    image = {
+        'urlImage': imagePokemon['secure_url'],
+        'keyImage': imagePokemon['public_id']
+    }
+    return Response(sendImage(image), status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -181,4 +223,3 @@ def getUpdateAndDeleteType(request, pk):
             sendMessage('The type with id ' + pk + ' has been deleted'),
             status=status.HTTP_204_NO_CONTENT
         )
-

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
-from .models import Type, Abilities, Category, Pokemon, Statistics
+from .models import Type, Abilities, Category, Pokemon, Statistics, ImagePokemon
 
 
 class TypeSerializer(serializers.ModelSerializer):
@@ -22,10 +22,10 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class PokemonSerializer(serializers.ModelSerializer):
-    categoryDetail = CategorySerializer(many=True, read_only=True, source='category')
-    typeDetail = TypeSerializer(many=True, read_only=True, source='type')
-    debilitiesDetail = TypeSerializer(many=True, read_only=True, source='debilities')
-    abilitiesDetail = AbilitiesSerializer(read_only=True, source='abilities')
+    category = CategorySerializer(many=True)
+    type = TypeSerializer(many=True)
+    debilities = TypeSerializer(many=True)
+    abilities = AbilitiesSerializer(read_only=True)
 
     class Meta:
         model = Pokemon
@@ -41,11 +41,7 @@ class PokemonSerializer(serializers.ModelSerializer):
             'previousEvolution',
             'laterEvolution',
             'category',
-            'debilities',
-            'categoryDetail',
-            'typeDetail',
-            'debilitiesDetail',
-            'abilitiesDetail'
+            'debilities'
         )
 
 
@@ -62,3 +58,15 @@ class StatisticsSerializer(serializers.ModelSerializer):
             'specialDefense',
             'speed'
         )
+
+
+class ImagePokemonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagePokemon
+        fields = (
+            'id',
+            'pokemon',
+            'urlImage',
+            'keyImage'
+        )
+

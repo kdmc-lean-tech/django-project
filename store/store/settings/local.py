@@ -1,5 +1,6 @@
 from .base import *
 # SECURITY WARNING: don't run with debug turned on in production!
+import cloudinary
 DEBUG = True
 
 ALLOWED_HOSTS = []
@@ -27,3 +28,9 @@ STATICFILES_DIRS = [BASE_DIR.child('static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.child('media')
+
+cloudinary.config(
+    cloud_name='dsienryym',
+    api_key='836386262572753',
+    api_secret='fmB0KlxAqzjtafe9-ozZZhdk1Qc'
+)

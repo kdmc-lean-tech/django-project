@@ -14,3 +14,7 @@ def sendMessage(message):
     }
     return json.dumps(mess)
 
+
+def sendImage(obj):
+    return json.dumps(obj)
+

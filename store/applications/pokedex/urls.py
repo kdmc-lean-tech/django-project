@@ -11,7 +11,9 @@ from .views import (
     getUpdateAndDeleteCategory,
     getTypes,
     createType,
-    getUpdateAndDeleteType
+    getUpdateAndDeleteType,
+    uploadImagePokemon,
+    getImagePokemon
 )
 
 urlpatterns = [
@@ -26,5 +28,7 @@ urlpatterns = [
     path('category/<pk>', getUpdateAndDeleteCategory),
     path('types', getTypes),
     path('type', createType),
-    path('type/<pk>', getUpdateAndDeleteType)
+    path('type/<pk>', getUpdateAndDeleteType),
+    path('upload', uploadImagePokemon),
+    path('pokemon-image/<pk>', getImagePokemon)
 ]

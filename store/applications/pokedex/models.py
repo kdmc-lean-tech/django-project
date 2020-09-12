@@ -1,5 +1,6 @@
 from django.db import models
 from model_utils.models import TimeStampedModel
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 SEX_CHOISES = [
@@ -57,6 +58,16 @@ class Statistics(TimeStampedModel):
     specialAttack = models.IntegerField()
     specialDefense = models.IntegerField()
     speed = models.IntegerField()
+
+    def __str__(self):
+        return str(self.pokemon.name)
+
+
+class ImagePokemon(TimeStampedModel):
+    pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, default=None)
+    image = CloudinaryField('file', blank=True)
+    urlImage = models.CharField(max_length=250, default=None)
+    keyImage = models.CharField(max_length=250, default=None)
 
     def __str__(self):
         return str(self.pokemon.name)
