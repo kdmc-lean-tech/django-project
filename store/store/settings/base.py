@@ -40,7 +40,8 @@ LOCAL_APPS = (
     'applications.home',
     'applications.api_basic',
     'applications.anime',
-    'applications.pokedex'
+    'applications.pokedex',
+    'applications.inventory'
 )
 
 THIRD_PARTY_APPS = (

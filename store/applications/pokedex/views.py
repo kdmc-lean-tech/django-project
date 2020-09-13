@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Pokemon, Statistics, Abilities, Category, Type
+from .models import Pokemon, Statistics, Abilities, Category, Type, ImagePokemon
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -56,8 +56,8 @@ def uploadImagePokemon(request):
 @api_view(['GET'])
 def getImagePokemon(request, pk):
     try:
-        pokemon = Pokemon.objects.get(pk=pk)
-        imagePokemon = ImagePokemonSerializer.objects.get(pk=pokemon['id'])
+        imagePokemon = ImagePokemon.objects.filter(pokemon=pk)
+        print(imagePokemon)
     except Pokemon.DoesNotExist:
         return HttpResponse(
             errorMessage('The pokemon with id ' + pk + ' no exist'),

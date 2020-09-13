@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('applications.api_basic.urls')),
     path('', include('applications.anime.urls')),
-    path('', include('applications.pokedex.urls'))
+    path('', include('applications.pokedex.urls')),
+    path('', include('applications.inventory.urls'))
 ]
